@@ -2,14 +2,17 @@
 import * as os from "os";
 import * as std from "std";
 
-var loadFile=function(filename){return `'hello'`;};
-var writeFile=function(filename, content){return "";};
+var loadFile=std.loadFile;
+var writeFile=function(filename, content){
+var file = std.open(filename, "w");
+file.puts(content);
+file.close();};
 
 var javaScript = function (){
 
 //Array extension
 Array.prototype.index = 0;
-Array.prototype.forEach = function(stack, body){for(var key=0;key<this.length;key++) body.apply(this[key], [stack]);}
+Array.prototype.forEach = function(each, body){for(var key=0;key<this.length;key++) body.apply(this[key], [each]);}
 Array.prototype.add = Array.prototype.push;
 Object.defineProperty(Array.prototype,"first",{get: function(){return this[this.index=0];}, set: function(v){this[this.index=0] = v;}});
 Object.defineProperty(Array.prototype,"next",{get: function(){return this[this.index<this.length?++this.index:0];}, set: function(v){if((++this.index)<this.length){this[this.index]=v;} else this.add(v);}});
@@ -24,7 +27,7 @@ Array.prototype.mus = -1;Array.prototype.pus = 1;
 Array.prototype.getter = function(){return this.join("");};
 Array.prototype.toString = function(){return this.getter();}
 Array.prototype.setter = function(stack){return this.value.getter(stack);};
-Array.prototype.indexer = function(n,b){var e ="this.{n} = function(v){var {n} = ''; this.forEach(v, function(stack){" +b + "}); return {n}; };"; eval(e.replace("{n}",n)); };
+Array.prototype.indexer = function(n,b){var e ="this.{n} = function(v){var {n} = ''; this.forEach(v, function(each){" +b + "}); return {n}; };"; eval(e.replace("{n}",n)); };
 Object.defineProperty(Array.prototype,"stack",{get: function(){ return this.getter();},set: function(stack){ return this.setter(stack);}});
 Array.prototype.module=function(name, stack){ eval(`Object.defineProperty(Array.prototype,name,  {get: function(){if (!this._${name})this._${name}=[];${stack} return this._${name};},set: function(stack){if (!this._${name})this._${name}=stack;}});`);};
 Array.prototype.module.indexer = function(name,code){this(name,"this._"+name+".indexer =function(name, code){this[name]=`"+code+"`;};");};
@@ -87,9 +90,8 @@ var cSharp = function() {
 };
 
 var script = new javaScript();
-var cmdLine = [""];
+script.commandLine = scriptArgs.slice(2);
 
-for (var n=0;n<cmdLine.length;n++)
-script.JSEO(loadFile(cmdLine[n]));
+script.JSEO(loadFile(scriptArgs[1]));
 
 console.log(script.toString());
