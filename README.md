@@ -1,0 +1,2 @@
+# JSEO
+javascript entrypoint oriented
