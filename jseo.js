@@ -1,7 +1,6 @@
-
-function loadFile(name){return document.getElementById(name).innerText;}
-function writeFile(name,content){var s=document.createNode("script"); s.type="data"; s.setAttribute("id", name); s.innerText=content; document.body.appendChild(s); return "";}
-
+//module exports
+Jseo = function () {
+  
 //Array extension
 Array.prototype.index = 0;
 Array.prototype.forEach = function(stack, body){for(var key=0;key<this.length;key++) body.apply(this[key], [stack]);}
@@ -29,7 +28,7 @@ Array.prototype.loader.indexer = function(name,stack){this(name, "this._"+name+"
 //parse Wise Object Notation
 var swon = {text:"", char:0, stack:"", until:function(a,b){var level=0; var result = "";
 for(this.char++;this.char<this.text.length;this.char++){  if ((this.here+"")==b){if (level<=0) return result; else level--;}  result += this.here; if ((this.here+"")==a){level++;}}},
-name: "", root: "js", node: "js", exist:{}, rootStack:["js"]};
+name: "", root: "jseo", node: "jseo", exist:{}, rootStack:["jseo"]};
 Object.defineProperty(swon, "here", {get:function(){return this.text[this.char];}});
 
 var bwon= [function(){swon.rootStack.push(swon.root); swon.root = swon.node;  return "";}, function(){swon.root = swon.rootStack.pop(); return "";}, function(){swon.node = swon.root; swon.name = ""; return "";}
@@ -42,7 +41,7 @@ bwon.token= "(),{}[]+=-*'\"#";bwon.breaker= "(),{}[]+=-*'\"# \t\r\n";
 bwon[-1] = function(){if (swon.stack=="")return ""; swon.name=swon.stack;if (swon.exist[swon.node + "." + swon.name] || swon.name=="module" || swon.name=="loader"){ swon.node += "."+swon.name; return ""; }else {swon.node += "."+swon.name; swon.exist[swon.node]={};return swon.node+"=[];";} };
 var comment = bwon.token.indexOf("#");var quote = function(str){return "'" + str +"'";};var doubleq = function(str){return "\"" + str +"\"";};bwon[comment] = function(){var skip=swon.until("", "\n"); return "";};
 
-Array.prototype.WON = function(wonstr){swon.text=wonstr; var result=""; var ok="";
+Array.prototype.JSEO = function(wonstr){swon.text=wonstr; var result=""; var ok="";
 for(swon.char=0;swon.char<swon.text.length;swon.char++){
   if (bwon.breaker.indexOf(swon.here)>-1){
    if (swon.stack.length>0){result+=bwon[-1](); }
@@ -59,20 +58,20 @@ String.prototype.replace = function(a,b){return this.split(a).join(b);}
 
 //globals
 
-var js=[];
+var jseo=[];
 var done = "<br/>";
 
-js.loader.indexer("load", "loadFile(added);");
-js.module("write","this._write.to = this._write.indexer = function(name, code){ writeFile(name, code);};");
-js.module("str","this._str.indexer =function(name, code){this[name]=code;};");
-js.module("json","this._json.indexer =function(name, code){js.JSON('{'+code+'}',js[name]={});};");
+jseo.loader.indexer("load", "loadFile(added);");
+jseo.module("write","this._write.to = this._write.indexer = function(name, code){ writeFile(name, code);};");
+jseo.module("str","this._str.indexer =function(name, code){this[name]=code;};");
+jseo.module("json","this._json.indexer =function(name, code){jseo.JSON('{'+code+'}',jseo[name]={});};");
 
-var scripts=document.getElementsByTagName("script");
-for(var n in scripts)if (scripts[n].type=="won"){
-var won = document.createElement("won");
-js.WON(scripts[n].innerText); 
-won.innerHTML = js.toString()+done;
-document.body.appendChild(won);}
+return jseo;
+} 
+
+
+
+
 
 
 // your code goes here
