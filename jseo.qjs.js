@@ -25,14 +25,14 @@ Array.prototype.mus = -1;Array.prototype.pus = 1;
 
 //default
 Array.prototype.getter = function(){return this.join("");};
-Array.prototype.toString = function(){return this.getter();}
+Array.prototype.toString = function(){return this.getter()+"";}
 Array.prototype.setter = function(stack){return this.value.getter(stack);};
 Array.prototype.indexer = function(n,b){var e ="this.{n} = function(v){var {n} = ''; this.forEach(v, function(each){" +b + "}); return {n}; };"; eval(e.replace("{n}",n)); };
-Object.defineProperty(Array.prototype,"stack",{get: function(){ return this.getter();},set: function(stack){ return this.setter(stack);}});
-Array.prototype.module=function(name, stack){ eval(`Object.defineProperty(Array.prototype,name,  {get: function(){if (!this._${name})this._${name}=[];${stack} return this._${name};},set: function(stack){if (!this._${name})this._${name}=stack;}});`);};
+Object.defineProperty(Array.prototype,"stack",{enumerable:false, get: function(){ return this.getter();},set: function(stack){ return this.setter(stack);}});
+Array.prototype.module=function(name, stack){ eval(`Object.defineProperty(Array.prototype,name,  {configurable:true, enumerable:false, get: function(){if (!this._${name})this._${name}=[];${stack}; return this._${name};},set: function(stack){if (!this._${name})this._${name}=stack;}});`);};
 Array.prototype.module.indexer = function(name,code){this(name,"this._"+name+".indexer =function(name, code){this[name]=`"+code+"`;};");};
-Array.prototype.loader=function(name, stack){ eval(`Object.defineProperty(Array.prototype,name,  {get: function(){if (!this._${name})this._${name}=[];${stack} return this._${name};},set: function(stack){if (!this._${name})this._${name}=stack;}});`);};
-Array.prototype.loader.indexer = function(name,stack){this(name, "this._"+name+".add = function(added){ this.push(`"+stack+"`); };this._"+name+".unshift = function(added){ this.unshift(`"+stack+"`); };");};
+Array.prototype.loader=function(name, stack){ eval(`Object.defineProperty(Array.prototype,name,  {configurable:true, enumerable:false, get: function(){if (!this._${name})this._${name}=[];${stack}; return this._${name};},set: function(stack){if (!this._${name})this._${name}=stack;}});`);};
+Array.prototype.loader.indexer = function(name,stack){this(name, "this._"+name+".add = function(entry){ this.push(`"+stack+"`); };this._"+name+".unshift = function(added){ this.unshift(`"+stack+"`); };");};
 
 //parse Wise Object Notation
 var swon = {text:"", char:0, stack:"", until:function(a,b){var level=0; var result = "";
@@ -41,8 +41,13 @@ name: "", root: "jseo", node: "jseo", exist:{}, rootStack:["jseo"]};
 Object.defineProperty(swon, "here", {get:function(){return this.text[this.char];}});
 
 var bwon= [function(){swon.rootStack.push(swon.root); swon.root = swon.node;  return "";}, function(){swon.root = swon.rootStack.pop(); return "";}, function(){swon.node = swon.root; swon.name = ""; return "";}
-, function(){var code = swon.until("{","}");code="function(stack){"+code+"}";return swon.node +".getter="+code+";"}, function(){return "";}
-, function(){var q="`"; if ((swon.node.indexOf("module")>-1) || (swon.node.indexOf("loader")>-1)){q="'";} var idx = swon.until("", "]"); var skip = swon.until("","{"); var cde = swon.until("{","}"); return swon.node + ".indexer("+doubleq(idx) + "," + q + cde.replace(q, "\\" + q).replace("\\n","\\\\n").replace("\n","\\n") + q + ");"; }, function(){return "";}
+, function(){var code = swon.until("{","}");code="function(stack){"+code+"}";var built= swon.node +".getter="+code+";"; 
+swon.node=swon.root; swon.name="";
+return built;}, function(){return "";}
+, function(){var q="`"; if ((swon.node.indexOf("module")>-1) || (swon.node.indexOf("loader")>-1)){q="'";} var idx = swon.until("", "]"); var skip = swon.until("","{"); var cde = swon.until("{","}"); var built= swon.node + ".indexer("+doubleq(idx) + "," + q + cde.replace(q, "\\" + q).replace("\\n","\\\\n").replace("\n","\\n") + q + ");";
+   swon.node = swon.root; swon.name ="" ;
+  return built;
+}, function(){return "";}
 , function(){var result = swon.node +".cell="+swon.node+".plus();"; swon.node += ".cell"; return result;}, function(){swon.stack = "value"; return "";}
 , function(){var result = swon.node +".cell="+swon.node+".minus();"; swon.node += ".cell"; return result;}, function(){return "";}
 , function(){var data = "`" + swon.until("", "'") + "`"; return swon.node + ".add(" + data + ");";}, function(){var data = "`" +swon.until("", "\"")+ "`"; return swon.node + ".add(" + data + ");";}];
@@ -55,7 +60,7 @@ for(swon.char=0;swon.char<swon.text.length;swon.char++){
   if (bwon.breaker.indexOf(swon.here)>-1){
    if (swon.stack.length>0){result+=bwon[-1](); }
     swon.stack=""; result+=bwon[bwon.token.indexOf(swon.here)](); 
-    }else swon.stack += swon.here;}  eval(result) };
+    }else swon.stack += swon.here;}  eval(result);};
 
 //Parse Javascript Object Notatation
 Array.prototype.JSON = function(jsonstr, obj){if (!obj)obj=this; eval("var json="+jsonstr+"; for(var k in json)obj[k]=json[k];"); };
@@ -66,6 +71,7 @@ String.prototype.before = function (b){var s=this; if (s.indexOf(b)>-1) return s
 String.prototype.replace = function(a,b){return this.split(a).join(b);}
 
 //globals
+//globals
 
 var jseo=[];
 var done = "<br/>";
@@ -74,7 +80,7 @@ jseo.loader.indexer("load", "loadFile(added);");
 jseo.module("write","this._write.to = this._write.indexer = function(name, code){ writeFile(name, code);};");
 jseo.module("str","this._str.indexer =function(name, code){this[name]=code;};");
 jseo.module("json","this._json.indexer =function(name, code){jseo.JSON('{'+code+'}',jseo[name]={});};");
-
+jseo.eval =eval;
 return jseo;
 };
 

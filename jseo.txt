@@ -13,7 +13,7 @@ link [three] {javascript: alert('here');},
 link [four] {javascript: alert('collection');}
 
 loader [list] { 
-  <li> ${added} </li> 
+  <li> ${entry} </li> 
 }, list ("one", "two"),
 
 "hello", "world" [Test]{ Test += each + this;}
