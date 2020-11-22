@@ -12,4 +12,6 @@ https://bellard.org/quickjs/quickjs-2020-11-08.tar.xz
 
 # usage
 file hello.txt
+
+# with bang (#!)
 ./hello.txt
