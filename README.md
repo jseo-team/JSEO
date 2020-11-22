@@ -10,6 +10,9 @@ https://bellard.org/quickjs/quickjs-2020-11-08.tar.xz
 # compile
 ./makr
 
+# Binaries available for
+ARM64
+
 # usage
 file hello.txt
 
