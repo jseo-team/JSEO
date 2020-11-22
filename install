@@ -3,4 +3,8 @@ rm  file.c
 echo #include "dotNet.h" >file.c
 cat jseo.file.c >>file.c
 gcc file.c  libquickjs.a  -o file  -I../quickjs  -lpthread -ldl -lm
+<<<<<<< HEAD
 cp file /usr/local/bin
+=======
+cp ./file /user/local/bin
+>>>>>>> bff55f843cf15505829c2715421f852e1d865718
