@@ -98,10 +98,10 @@ var cSharp = function() {
 var script = new javaScript();
 script.commandLine = scriptArgs.slice(2);
 
-script.JSEO(loadFile("categories.jseo"));
-script.JSEO(loadFile("effects.jseo"));
-script.JSEO(loadFile("filters.jseo"));
-script.JSEO(loadFile("formats.jseo"));
+script.JSEO(loadFile("categories.js"));
+script.JSEO(loadFile("effects.js"));
+script.JSEO(loadFile("filters.js"));
+script.JSEO(loadFile("formats.js"));
 script.JSEO(loadFile(scriptArgs[1]));
 
 console.log(script.toString());
