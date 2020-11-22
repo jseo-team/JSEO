@@ -1,0 +1,6 @@
+private login "jseo",
+private password "md5",
+private logs ("jseo"),
+private upload ("jseo"),
+private call ("jseo"),
+private run ("jseo"),

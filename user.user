@@ -1,0 +1,6 @@
+public. login "user",
+private password "md5",
+private logs ("user"),
+public.teamwork upload ("user"),
+private call ("user"),
+private run ("user"),
