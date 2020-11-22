@@ -7,8 +7,8 @@ Setup the quickjs submodule
 https://bellard.org/quickjs/quickjs-2020-11-08.tar.xz
 - :: to folder : ../quickjs
 
-# compile
-./makr
+# compile with local script
+./make
 
 # Binaries available for
 ARM64
