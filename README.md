@@ -2,11 +2,14 @@
 javascript entrypoint oriented
 
 # setup
-Update the submodules
-
+Setup the quickjs submodule
+- download and extract latest source ::
+https://bellard.org/quickjs/quickjs-2020-11-08.tar.xz
+- :: to folder : ../quickjs
 
 # compile
-./make
+./makr
 
 # usage
 file hello.txt
+./hello.txt
