@@ -1,29 +1,29 @@
 
-loader [org] 
+loader [origin] 
 { -i ${entry} },
 loader [mp3] 
-{./video -y ${jseo.org} -vn -ac 2 -ar 44100 ${entry} },
+{./video -y ${jseo.origin} -vn -ac 2 -ar 44100 ${entry} },
 
 loader [gsm]
-{./video -y ${jseo.org} -vn -ac 1 -ar 8000 ${entry}},
+{./video -y ${jseo.origin} -vn -ac 1 -ar 8000 ${entry}},
 
 loader [mp4]
-{./video -y ${jseo.org} -f mp4 ${entry} },
+{./video -y ${jseo.origin} -f mp4 ${entry} },
 
 module [gif] 
-{./video -y ${jseo.org} ${jseo.JSON("{"+code+"}", jseo.clip)?"":""} ${jseo.clip.start?"-ss "+jseo.clip.start:""} ${jseo.clip.duration?"-t "+jseo.clip.duration:""} ${jseo.clip.end?"-to "+jseo.clip.end:""} -filter_complex "[0:v] fps=15" -an ${name} },
+{./video -y ${jseo.origin} ${jseo.JSON("{"+code+"}", jseo.clip)?"":""} ${jseo.clip.start?"-ss "+jseo.clip.start:""} ${jseo.clip.duration?"-t "+jseo.clip.duration:""} ${jseo.clip.end?"-to "+jseo.clip.end:""} -filter_complex "[0:v] fps=15" -an ${name}.gif },
 
 module [clip] 
-{./video -y ${jseo.org} ${jseo.JSON("{"+code+"}", jseo.clip)?"":""} ${jseo.clip.start?"-ss "+jseo.clip.start:""} ${jseo.clip.duration?"-t "+jseo.clip.duration:""} ${jseo.clip.end?"-to "+jseo.clip.end:""} ${name} },
+{./video -y ${jseo.origin} ${jseo.JSON("{"+code+"}", jseo.clip)?"":""} ${jseo.clip.start?"-ss "+jseo.clip.start:""} ${jseo.clip.duration?"-t "+jseo.clip.duration:""} ${jseo.clip.end?"-to "+jseo.clip.end:""} ${name} },
 
 
-org [loop]
+origin [loop]
 {loop = " -stream_loop -1 "+this+"  -t " + each ;},
 
 loader [audio]
-{./video -y ${jseo.org} -i ${entry} -shortest -map 0:v:0 -map 1:a:0 -f mp4 ${jseo.out} },
+{./video -y ${jseo.origin} -i ${entry} -shortest -map 0:v:0 -map 1:a:0 -f mp4 ${jseo.out} },
 loader [video]
-{./video -y ${jseo.org} -i ${entry} -shortest -map 0:a:0 -map 1:v:0 -f mp4 ${jseo.out} },
+{./video -y ${jseo.origin} -i ${entry} -shortest -map 0:a:0 -map 1:v:0 -f mp4 ${jseo.out} },
 
 module [tube]
 {./youtube ${code} -o ${name}},
@@ -42,4 +42,5 @@ module [tube]
   var c=os.exec(trim); 
   os.waitpid(c,0);
 },
+
 

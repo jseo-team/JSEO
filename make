@@ -1,6 +1,6 @@
-qjsc -e jseo.qjs.js -o jseo.qjs.c
-rm jseo.final.c
-echo #include "dotNet.h" >jseo.final.c
-cat jseo.qjs.c >>jseo.final.c
-gcc jseo.final.c  libquickjs.a  -o script  -I../quickjs  -lpthread -ldl -lm
+qjsc -e jseo.file.js -o jseo.file.c
+rm file.c
+echo #include "dotNet.h" >file.c
+cat jseo.file.c >>file.c
+gcc file.c  libquickjs.a  -o file  -I../quickjs  -lpthread -ldl -lm
 

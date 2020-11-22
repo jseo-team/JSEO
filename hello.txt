@@ -1,0 +1,11 @@
+#!/usr/local/bin/file
+primary "hello",
+primary "world",
+
+origin "am fine -",
+
+#main
+{  
+   console.log(this.origin);
+   return this.primary; 
+}
