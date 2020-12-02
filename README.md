@@ -17,11 +17,11 @@ cd ~/JSEO;
 # compile with local script
 ./make
 
-# Binaries available for
-ARMhf (soon) 
-::[ ARM64 ]:: de-activated
-x86 (soon) 
-Windows 32/64 (soon)
+# Binaries available in a static build forge
+:: [ ARMhf ] ::
+:: [ ARM64 ] :: 
+x86 ]::
+Win 32/64 ]::
 
 # usage
 file hello.txt
