@@ -17,7 +17,7 @@ cd ~/JSEO;
 # compile with local script
 ./make
 
-# Binaries available in the static build website : http://hd.entry.repl.it
+# Binaries available in the static build website : http://hd.entry.repl.co 
 :: [ ARMhf ] ::
 :: [ ARM64 ] :: 
 x86 ]::
