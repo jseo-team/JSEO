@@ -19,12 +19,12 @@ cd ~/JSEO
 
 # Binaries available for
 ARMhf (soon) 
-::[ ARM64 ]:: 
+::[ ARM64 ]:: de-activated
 x86 (soon) 
 Windows 32/64 (soon)
 
 # usage
 file hello.txt
 
-# with bang (#!)
+# with bang (#!) on linux/termux
 ./hello.txt
