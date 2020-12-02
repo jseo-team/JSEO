@@ -10,7 +10,7 @@ https://bellard.org/quickjs/quickjs-2020-11-08.tar.xz
 (try CC=mingw-w64 for windows in Makefile)
 - :: test with :: 
 
-cd ~/JSEO
+cd ~/JSEO;
 ../qjsc 
 
 
